@@ -1,7 +1,14 @@
 pipeline {
-    agent any
+    agent { label 'docker-agent' }
 
     stages {
+
+        stage('Check Node') {
+            steps {
+                sh 'hostname'
+                sh 'whoami'
+            }
+        }
 
         stage('Build Image') {
             steps {
@@ -12,7 +19,7 @@ pipeline {
         stage('Run Container') {
             steps {
                 sh 'docker rm -f hello-team-chris || true'
-                sh 'docker run -d --name hello-team-chris -p 5000:5000 hello-team-chris'
+                sh 'docker run -d -p 5000:5000 --name hello-team-chris hello-team-chris'
             }
         }
     }
