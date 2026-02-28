@@ -1,14 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        label 'vm-agent'   // must match your node label
+    }
 
     stages {
-        stage('Clone') {
-            steps {
-                git 'https://github.com/vishnu8150hub/hello-team-chris.git'
-            }
-        }
-
-        stage('Build Docker Image') {
+        stage('Build Image') {
             steps {
                 sh 'docker build -t hello-team-chris .'
             }
@@ -16,7 +12,8 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 5000:5000 hello-team-chris'
+                sh 'docker rm -f hello-team-chris || true'
+                sh 'docker run -d --name hello-team-chris -p 5000:5000 hello-team-chris'
             }
         }
     }
