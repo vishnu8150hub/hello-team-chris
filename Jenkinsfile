@@ -1,9 +1,8 @@
 pipeline {
-    agent {
-        label 'vm-agent'   // must match your node label
-    }
+    agent any
 
     stages {
+
         stage('Build Image') {
             steps {
                 sh 'docker build -t hello-team-chris .'
